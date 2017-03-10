@@ -1,0 +1,39 @@
+{
+  "name": "grammar-robo-server",
+  "version": "1.0.0",
+  "description": "The backend server for the web(sentense entry) and mobile(playing) interface",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha --timeout 15000 test/integration"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.1.4",
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "lodash": "^4.17.2",
+    "mongoose": "^4.7.0",
+    "morgan": "^1.7.0",
+    "nodemailer": "^2.6.4",
+    "nodemailer-mailgun-transport": "^1.2.2",
+    "require-dir": "^0.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.17.1",
+    "eslint-config-airbnb-base": "^11.1.1",
+    "eslint-config-google": "^0.7.1",
+    "eslint-config-standard": "^7.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "mocha": "^3.2.0",
+    "raml2html": "^4.0.4",
+    "superagent": "^1.8.3",
+    "supertest": "^2.0.1",
+    "yargs": "^4.7.1"
+  }
+}

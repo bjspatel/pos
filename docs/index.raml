@@ -1,0 +1,499 @@
+#%RAML 1.0
+title: grammar-robo
+baseUri: /api
+mediaType: application/json
+description: REST API for the grammar-robo
+/sentences:
+  displayName: sentences
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        type: string
+    get:
+      displayName: GET-sentence
+      responses:
+        '200':
+          body:
+            application/json:
+              type: sentence-output
+              example:
+                parts:
+                  - content: this
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 25
+                        false_count: 25
+                  - content: is
+                    tags:
+                      - depth: '1'
+                        code: vb
+                        true_count: 45
+                        false_count: 5
+                  - content: an
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 35
+                        false_count: 15
+                  - content: example
+                    tags:
+                      - depth: '1'
+                        code: nn
+                        true_count: 25
+                        false_count: 25
+                true_percent:
+                  core: 80
+                  extrimity: 60
+                  join: 100
+                  nn: 90
+                  vb: 70
+                  ad: 60
+                type_counts:
+                  ad: 2
+                  nn: 1
+                  vb: 1
+                appeared: 50
+                core-level: 1
+                extrimism-level: 1
+                join-level: 0
+                vocab-level: 1
+    put:
+      displayName: PUT-sentence
+      body:
+        application/json:
+          type: sentence-input
+          example:
+            parts:
+              - content: this
+                tags:
+                  - depth: '1'
+                    code: ad
+              - content: is
+                tags:
+                  - depth: '1'
+                    code: vb
+              - content: an
+                tags:
+                  - depth: '1'
+                    code: ad
+              - content: example
+                tags:
+                  - depth: '1'
+                    code: nn
+            type_counts:
+              ad: 2
+              nn: 1
+              vb: 1
+            core-level: 1
+            extrimism-level: 1
+            join-level: 0
+            vocab-level: 1
+      responses:
+        '200':
+          body:
+            application/json:
+              type: sentence-output
+              example:
+                parts:
+                  - content: this
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 25
+                        false_count: 25
+                  - content: is
+                    tags:
+                      - depth: '1'
+                        code: vb
+                        true_count: 45
+                        false_count: 5
+                  - content: an
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 35
+                        false_count: 15
+                  - content: example
+                    tags:
+                      - depth: '1'
+                        code: nn
+                        true_count: 25
+                        false_count: 25
+                true_percent:
+                  core: 80
+                  extrimity: 60
+                  join: 100
+                  nn: 90
+                  vb: 70
+                  ad: 60
+                type_counts:
+                  ad: 2
+                  nn: 1
+                  vb: 1
+                appeared: 50
+                core-level: 1
+                extrimism-level: 1
+                join-level: 0
+                vocab-level: 1
+    delete:
+      displayName: DELETE-sentence
+      responses:
+        '204':
+          body: {}
+  get:
+    displayName: LIST-sentences
+    responses:
+      '200':
+        body:
+          application/json:
+            type: array
+            items:
+              type: sentence-output
+            example:
+              - parts:
+                  - content: this
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 25
+                        false_count: 25
+                  - content: is
+                    tags:
+                      - depth: '1'
+                        code: vb
+                        true_count: 45
+                        false_count: 5
+                  - content: an
+                    tags:
+                      - depth: '1'
+                        code: ad
+                        true_count: 35
+                        false_count: 15
+                  - content: example
+                    tags:
+                      - depth: '1'
+                        code: nn
+                        true_count: 25
+                        false_count: 25
+                true_percent:
+                  core: 80
+                  extrimity: 60
+                  join: 100
+                  nn: 90
+                  vb: 70
+                  ad: 60
+                type_counts:
+                  ad: 2
+                  nn: 1
+                  vb: 1
+                appeared: 50
+                core-level: 1
+                extrimism-level: 1
+                join-level: 0
+                vocab-level: 1
+  post:
+    displayName: POST-sentence
+    body:
+      application/json:
+        type: sentence-input
+        example:
+          parts:
+            - content: this
+              tags:
+                - depth: '1'
+                  code: ad
+            - content: is
+              tags:
+                - depth: '1'
+                  code: vb
+            - content: an
+              tags:
+                - depth: '1'
+                  code: ad
+            - content: example
+              tags:
+                - depth: '1'
+                  code: nn
+          type_counts:
+            ad: 2
+            nn: 1
+            vb: 1
+          core-level: 1
+          extrimism-level: 1
+          join-level: 0
+          vocab-level: 1
+    responses:
+      '201':
+        body:
+          application/json:
+            type: sentence-output
+            example:
+              parts:
+                - content: this
+                  tags:
+                    - depth: '1'
+                      code: ad
+                      true_count: 25
+                      false_count: 25
+                - content: is
+                  tags:
+                    - depth: '1'
+                      code: vb
+                      true_count: 45
+                      false_count: 5
+                - content: an
+                  tags:
+                    - depth: '1'
+                      code: ad
+                      true_count: 35
+                      false_count: 15
+                - content: example
+                  tags:
+                    - depth: '1'
+                      code: nn
+                      true_count: 25
+                      false_count: 25
+              true_percent:
+                core: 80
+                extrimity: 60
+                join: 100
+                nn: 90
+                vb: 70
+                ad: 60
+              type_counts:
+                ad: 2
+                nn: 1
+                vb: 1
+              appeared: 50
+              core-level: 1
+              extrimism-level: 1
+              join-level: 0
+              vocab-level: 1
+/users:
+  displayName: users
+  '/{id}':
+    displayName: '{id}'
+    uriParameters:
+      id:
+        type: string
+    get:
+      displayName: GET-user
+      responses:
+        '200':
+          body:
+            application/json:
+              type: user-input
+    put:
+      displayName: PUT-user
+      body:
+        application/json:
+          type: user-input
+      responses:
+        '200':
+          body:
+            application/json:
+              type: user-input
+    delete:
+      displayName: DELETE-user
+      responses:
+        '204':
+          body: {}
+  get:
+    displayName: LIST-users
+    responses:
+      '200':
+        body:
+          application/json:
+            type: array
+            items:
+              type: user-input
+  post:
+    displayName: POST-user
+    body:
+      application/json:
+        type: user-input
+    responses:
+      '201':
+        body:
+          application/json:
+            type: user-input
+types:
+  user-input:
+    properties:
+      token:
+        type: string
+        required: false
+      role:
+        type: string
+        required: false
+      first_name:
+        type: string
+        required: false
+      last_name:
+        type: string
+        required: false
+      created_at:
+        type: string
+        required: false
+      updated_at:
+        type: string
+        required: false
+      last_login_at:
+        type: string
+        required: false
+    example:
+      token: String
+      role: player
+      first_name: String
+      last_name: String
+      created_at: Date
+      updated_at: Date
+      last_login_at: Date
+  sentence-input:
+    properties:
+      parts:
+        type: array
+        items:
+          type: object
+          properties:
+            content:
+              type: string
+            tags:
+              type: array
+              items:
+                type: object
+                properties:
+                  depth:
+                    type: string
+                  code:
+                    type: string
+        required: false
+      type_counts:
+        type: object
+        required: false
+      core-level:
+        type: integer
+        required: false
+      extrimism-level:
+        type: integer
+        required: false
+      join-level:
+        type: integer
+        required: false
+      vocab-level:
+        type: integer
+        required: false
+    example:
+      parts:
+        - content: this
+          tags:
+            - depth: '1'
+              code: ad
+        - content: is
+          tags:
+            - depth: '1'
+              code: vb
+        - content: an
+          tags:
+            - depth: '1'
+              code: ad
+        - content: example
+          tags:
+            - depth: '1'
+              code: nn
+      type_counts:
+        ad: 2
+        nn: 1
+        vb: 1
+      core-level: 1
+      extrimism-level: 1
+      join-level: 0
+      vocab-level: 1
+  sentence-output:
+    properties:
+      parts:
+        type: array
+        items:
+          type: object
+          properties:
+            content:
+              type: string
+            tags:
+              type: array
+              items:
+                type: object
+                properties:
+                  depth:
+                    type: string
+                  code:
+                    type: string
+                  true_count:
+                    type: integer
+                  false_count:
+                    type: integer
+        required: false
+      true_percent:
+        type: object
+        required: false
+      type_counts:
+        type: object
+        required: false
+      appeared:
+        type: integer
+        required: false
+      core-level:
+        type: integer
+        required: false
+      extrimism-level:
+        type: integer
+        required: false
+      join-level:
+        type: integer
+        required: false
+      vocab-level:
+        type: integer
+        required: false
+    example:
+      parts:
+        - content: this
+          tags:
+            - depth: '1'
+              code: ad
+              true_count: 25
+              false_count: 25
+        - content: is
+          tags:
+            - depth: '1'
+              code: vb
+              true_count: 45
+              false_count: 5
+        - content: an
+          tags:
+            - depth: '1'
+              code: ad
+              true_count: 35
+              false_count: 15
+        - content: example
+          tags:
+            - depth: '1'
+              code: nn
+              true_count: 25
+              false_count: 25
+      true_percent:
+        core: 80
+        extrimity: 60
+        join: 100
+        nn: 90
+        vb: 70
+        ad: 60
+      type_counts:
+        ad: 2
+        nn: 1
+        vb: 1
+      appeared: 50
+      core-level: 1
+      extrimism-level: 1
+      join-level: 0
+      vocab-level: 1
