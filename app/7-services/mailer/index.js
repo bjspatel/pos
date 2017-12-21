@@ -10,7 +10,7 @@
             service: 'Gmail',
             auth: {
                 user: 'mail2bjs@gmail.com',
-                pass: 'B23r3i88j'
+                pass: ''
             }
         });
 
