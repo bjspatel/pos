@@ -2,9 +2,7 @@
  * @file
  * Main file for all tasks.
  */
-(function () {
-    'use strict';
+'use strict'
 
-    const requireDir = require('require-dir');
-    module.exports   = requireDir('.', {recurse: true, camelcase: true});
-})();
+const requireDir = require('require-dir')
+module.exports   = requireDir('.', {recurse: true, camelcase: true})

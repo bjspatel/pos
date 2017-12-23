@@ -1,14 +1,11 @@
-(function() {
+'use strict'
 
-    'use strict';
+const Promise = require('bluebird')
 
-    const Promise = require('bluebird');
+module.exports = function() {
 
-    module.exports = function() {
-
-        return new Promise(function(resolve, reject) {
-            console.log('TO DO: Filter DB');
-            resolve();
-        });
-    };
-})();
+    return new Promise(function(resolve, reject) {
+        console.log('TO DO: Filter DB')
+        resolve()
+    })
+}

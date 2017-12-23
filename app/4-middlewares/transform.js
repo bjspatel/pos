@@ -5,36 +5,34 @@
  * - Add field
  * - Remove field
  */
-(function() {
-    'use strict';
+'use strict'
 
-    const deepOperations = require('../6-helpers/deep-operations');
-    const specifications = require('../8-specifications');
+const deepOperations = require('../6-helpers/deep-operations')
+const specifications = require('../8-specifications')
 
-    function execute(data, specs = []) {
-        const filteredData = {};
-        for(let field of specs) {
-            deepOperations.setDeepFromSrc(filteredData, field, data);
-        }
-        return filteredData;
+function execute(data, specs = []) {
+    const filteredData = {}
+    for(let field of specs) {
+        deepOperations.setDeepFromSrc(filteredData, field, data)
     }
+    return filteredData
+}
 
-    function filterMiddleware(req, res) {
+function filterMiddleware(req, res) {
 
-        // TO DO
-        let data          = req.isHandled ? res.data : req.body;
-        const filterSpecs = req.isHandled ? req.specs.transformFilter.out : req.specs.transformFilter.in;
+    // TO DO
+    let data          = req.isHandled ? res.data : req.body
+    const filterSpecs = req.isHandled ? req.specs.transformFilter.out : req.specs.transformFilter.in
 
-        data = execute(data, filterSpecs);
-        if(req.isHandled) {
-            res.data = data;
-        } else {
-            req.body = data;
-        }
+    data = execute(data, filterSpecs)
+    if(req.isHandled) {
+        res.data = data
+    } else {
+        req.body = data
     }
+}
 
-    module.exports = function(req, res, next) {
-        filterMiddleware(req, res);
-        next();
-    };
-})();
+module.exports = (req, res, next) => {
+    filterMiddleware(req, res)
+    next()
+}

@@ -1,105 +1,103 @@
-(function() {
-    
-    'use strict';
+'use strict'
 
-    const CRUD       = require('./core/crud');
-    const UserModel  = require('../2-models').user.model;
-    const utility    = require('../6-helpers/utility');
-    const UserWorker = new CRUD(UserModel);
+const CRUD       = require('./core/crud')
+const UserModel  = require('../2-models').user.model
+const utility    = require('../6-helpers/utility')
+const UserWorker = new CRUD(UserModel)
 
-    UserWorker.register = function(req, res, next) {
+UserWorker.register = async function(req, res, next) {
 
-        this._create(req.body)
-        .then(userData => {
-            res.data      = userData.toObject();
-            req.isHandled = true;
-            next();
-        })
-        .catch((err) => {
-            next(err);
-        });
-    };
+    try {
+        const userData = await this._create(req.body)
+        res.data      = userData.toObject()
+        req.isHandled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-    UserWorker.activate = function(req, res, next) {
+UserWorker.activate = async function(req, res, next) {
+    const query = { _id: req.user.id }
+    const data  = { status: 'A' }
 
-        const query = { _id: req.user.id };
-        const data  = { status: 'A' };
+    try {
+        const userData = await this._update(query, data)
+        res.data    = userData.toObject()
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-        this._update(query, data)
-        .then(userData => {
-            res.data    = userData.toObject();
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+UserWorker.update = async function(req, res, next) {
+    const query = { _id: req.user.id }
+    const data  = req.body
 
-    UserWorker.update = function(req, res, next) {
+    try {
+        const userData = await this._update(query, data)
+        res.data    = userData.toJSON()
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-        const query = { _id: req.user.id };
-        const data  = req.body;
+UserWorker.delete = async function(req, res, next) {
+    const query = { email: req.params.email }
 
-        this._update(query, data)
-        .then(userData => {
-            res.data    = userData.toJSON();
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+    try {
+        await this._delete(query)
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-    UserWorker.delete = function(req, res, next) {
+UserWorker.readMany = async function(req, res, next) {
+    const paginateOptions = {
+        after: req.query.after,
+        limit: req.query.limit,
+        sort:  req.query.sort,
+        lean:  req.query.lean
+    }
+    delete req.query.after
+    delete req.query.limit
+    delete req.query.sort
+    delete req.query.lean
+    const query = (Object.keys(req.query).length > 0) ? req.query : {}
 
-        const query = { email: req.params.email };
-        this._delete(query)
-        .then(removedUser => {
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+    try {
+        const usersData = await this._readMany(query, paginateOptions)
+        res.data    = usersData.toJSON()
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-    UserWorker.readMany = function(req, res, next) {
+UserWorker.populate = async function(req, res, next) {
+    const userId = req.params.user_id
+    if(userId == null) {
+        throw 'Cannot populate user'
+    }
+    const query = { _id: userId }
 
-        const paginateOptions = {
-            after: req.query.after,
-            limit: req.query.limit,
-            sort:  req.query.sort,
-            lean:  req.query.lean
-        };
-        delete req.query.after;
-        delete req.query.limit;
-        delete req.query.sort;
-        delete req.query.lean;
-        const query = (Object.keys(req.query).length > 0) ? req.query : {};
+    try {
+        const userData = await this._read(query)
+        req.user = userData
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-        this._readMany(query, paginateOptions)
-        .then(usersData => {
-            res.data    = usersData.toJSON();
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+UserWorker.read = UserWorker.populate
 
-    UserWorker.populate = function(req, res, next) {
-        const userId = req.params.user_id;
-        if(userId == null) {
-            throw 'Cannot populate user';
-        }
-        const query = { _id: userId };
+utility.bindWorker(UserWorker)
 
-        this._read(query)
-        .then(userData => {
-            req.user = userData;
-            next();
-        })
-        .catch(next);
-    };
-
-    UserWorker.read = UserWorker.populate;
-
-    utility.bindWorker(UserWorker);
-
-    module.exports = UserWorker;
-})();
+module.exports = UserWorker

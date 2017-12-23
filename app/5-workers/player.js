@@ -1,68 +1,66 @@
-(function() {
+'use strict'
 
-    'use strict';
+const CRUD         = require('./core/crud')
+const PlayerModel  = require('../2-models').player.model
+const utility      = require('../6-helpers/utility')
+const PlayerWorker = new CRUD(PlayerModel)
 
-    const CRUD         = require('./core/crud');
-    const PlayerModel  = require('../2-models').player.model;
-    const utility      = require('../6-helpers/utility');
-    const PlayerWorker = new CRUD(PlayerModel);
+PlayerWorker.register = async function(req, res, next) {
 
-    PlayerWorker.register = function(req, res, next) {
+    try {
+        const playerData = await this._create(req.body)
+        res.data    = playerData.toObject()
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-        this._create(req.body)
-        .then(playerData => {
-            res.data    = playerData.toObject();
-            req.handled = true;
-            next();
-        })
-        .catch((err) => {
-            next(err);
-        });
-    };
+PlayerWorker.update = async function(req, res, next) {
+    const query = { _id: req.player.id }
+    const data  = req.body
 
-    PlayerWorker.update = function(req, res, next) {
+    try {
+        const playerData = await this._update(query, data)
+        res.data    = playerData.toJSON()
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-        const query = { _id: req.player.id };
-        const data  = req.body;
+PlayerWorker.delete = async function(req, res, next) {
+    const query = { email: req.params.email }
 
-        this._update(query, data)
-        .then(playerData => {
-            res.data    = playerData.toJSON();
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+    try {
+        await this._delete(query)
+        req.handled = true
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-    PlayerWorker.delete = function(req, res, next) {
+PlayerWorker.populate = async function(req, res, next) {
+    const playerId = req.params.player_id
+    if(playerId == null) {
+        throw 'Cannot populate player'
+    }
+    const query = { _id: playerId }
 
-        const query = { email: req.params.email };
-        this._delete(query)
-        .then(removedPlayer => {
-            req.handled = true;
-            next();
-        })
-        .catch(next);
-    };
+    try {
+        const playerData = this._read(query)
+        req.player = playerData
+        next()
+    } catch (err) {
+        next(err)
+    }
+}
 
-    PlayerWorker.populate = function(req, res, next) {
-        const playerId = req.params.player_id;
-        if(playerId == null) {
-            throw 'Cannot populate player';
-        }
-        const query = { _id: playerId };
+PlayerWorker.read = PlayerWorker.populate
 
-        this._read(query)
-        .then(playerData => {
-            req.player = playerData;
-            next();
-        })
-        .catch(next);
-    };
+utility.bindWorker(PlayerWorker)
 
-    PlayerWorker.read = PlayerWorker.populate;
-
-    utility.bindWorker(PlayerWorker);
-
-    module.exports = PlayerWorker;
-})();
+module.exports = PlayerWorker

@@ -8,97 +8,94 @@
  * Param-Sepcs
  * Validation-Specs
  */
-(function() {
+'use strict'
 
-    'use strict';
+const _                   = require('lodash')
+const { ValidationError } = require('../6-helpers/errors')
+let definitions           = null
 
-    const _                   = require('lodash');
-    const { ValidationError } = require('../6-helpers/errors');
-    let definitions           = null;
+function hasChildSpecs(specValue) {
+    return (_.isObject(specValue) && !specValue.rule)
+}
 
-    function hasChildSpecs(specValue) {
-        return (_.isObject(specValue) && !specValue.rule);
-    }
+function execute(data, specs, path = '') {
 
-    function execute(data, specs, path = '') {
+    let failures   = []
+    const prePath  = (path.length > 0) ? (path + '.') : path
+    for(let field of Object.keys(data)) {
+        const fieldPath   = (prePath.length > 0) ? (prePath + '.' + field) : field
+        const value       = data[field]
+        const presentSpec = specs[field]
+        const isDeepSpec  = hasChildSpecs(presentSpec)
+        if(presentSpec == null) {
+            continue
+        }
 
-        let failures   = [];
-        const prePath  = (path.length > 0) ? (path + '.') : path;
-        for(let field of Object.keys(data)) {
-            const fieldPath   = (prePath.length > 0) ? (prePath + '.' + field) : field;
-            const value       = data[field];
-            const presentSpec = specs[field];
-            const isDeepSpec  = hasChildSpecs(presentSpec);
-            if(presentSpec == null) {
-                continue;
-            }
-
-            if(_.isArray(value)) {
-                for(let index=0; index<value.length; index++) {
-                    const element     = value[index];
-                    const elementPath = [fieldPath, index].join('.');
-                    if(_.isObject(element) && isDeepSpec) {
-                        const presentFailures = execute(element, presentSpec, elementPath);
-                        failures.push(presentFailures);
-                    } else if(!_.isObject(element) && !isDeepSpec) {
-                        const failure = executeRule(elementPath, element, presentSpec);
-                        failures.push(failure);
-                    } else {
-                        throw 'incorrect spec';
-                    }
-                }
-            } else if (_.isObject(value)) {
-                if(isDeepSpec) {
-                    const presentFailures = execute(value, presentSpec, fieldPath);
-                    failures.push(presentFailures);
+        if(_.isArray(value)) {
+            for(let index=0; index<value.length; index++) {
+                const element     = value[index]
+                const elementPath = [fieldPath, index].join('.')
+                if(_.isObject(element) && isDeepSpec) {
+                    const presentFailures = execute(element, presentSpec, elementPath)
+                    failures.push(presentFailures)
+                } else if(!_.isObject(element) && !isDeepSpec) {
+                    const failure = executeRule(elementPath, element, presentSpec)
+                    failures.push(failure)
                 } else {
-                    throw 'incorrect spec';
+                    throw 'incorrect spec'
                 }
+            }
+        } else if (_.isObject(value)) {
+            if(isDeepSpec) {
+                const presentFailures = execute(value, presentSpec, fieldPath)
+                failures.push(presentFailures)
             } else {
-                const failure = executeRule(fieldPath, value, presentSpec);
-                failures.push(failure)
+                throw 'incorrect spec'
             }
-        }
-
-        return flatten(failures);
-    }
-
-    function flatten(arr) {
-        arr = _.flattenDeep(arr);
-        arr = _.without(arr, null);
-        return arr;
-    }
-
-    function executeRule(path, value, spec) {
-
-        if(_.isArray(spec)) {
-            const failures = [];
-            for(let presentSpec of spec) {
-                const presentFailure = executeRule(path, value, presentSpec);
-                failures.push(presentFailure);
-            }
-            return flatten(failures);
         } else {
-            const rule = definitions[spec.rule];
-            const params = [path, value];
-            spec.value && params.push(spec.value);
-
-            return rule.apply(null, params) || [];
+            const failure = executeRule(fieldPath, value, presentSpec)
+            failures.push(failure)
         }
     }
 
-    module.exports = function(req, res, next) {
+    return flatten(failures)
+}
 
-        // TO DO
+function flatten(arr) {
+    arr = _.flattenDeep(arr)
+    arr = _.without(arr, null)
+    return arr
+}
 
-        // const specs = req.specs.validationSpecs;
-        // const prefs = req.specs.paramPrefs;
-        // definitions = req.specs.validationDefs;
-        // const failures = execute(req.body, specs);
-        // if(failures.length > 0) {
-        //     next(new ValidationError(failures));
-        // } else {
-            next();
-        // }
-    };
-})();
+function executeRule(path, value, spec) {
+
+    if(_.isArray(spec)) {
+        const failures = []
+        for(let presentSpec of spec) {
+            const presentFailure = executeRule(path, value, presentSpec)
+            failures.push(presentFailure)
+        }
+        return flatten(failures)
+    } else {
+        const rule = definitions[spec.rule]
+        const params = [path, value]
+        spec.value && params.push(spec.value)
+
+        return rule.apply(null, params) || []
+    }
+}
+
+module.exports = (req, res, next) => {
+
+    // TO DO
+
+    // const specs = req.specs.validationSpecs
+    // const prefs = req.specs.paramPrefs
+    // definitions = req.specs.validationDefs
+    // const failures = execute(req.body, specs)
+    // if(failures.length > 0) {
+    //     next(new ValidationError(failures))
+    // } else {
+    next()
+    // }
+}

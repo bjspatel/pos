@@ -1,9 +1,6 @@
 /**
  * User transform-map specification
  */
-(function() {
+'use strict'
 
-    'use strict';
-
-    module.exports = {};
-})();
+module.exports = {}

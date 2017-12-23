@@ -1,13 +1,10 @@
 /**
  * Sentence Part schema specification
  */
-(function() {
+'use strict'
 
-    'use strict';
-
-    module.exports = {
-        content: String,
-        punctuation: String,
-        tags: Object
-    };
-})();
+module.exports = {
+    content: String,
+    punctuation: String,
+    tags: Object
+}

@@ -1,8 +1,6 @@
 /**
  * Middleware anchor file
  */
-(function() {
-    'use strict';
+'use strict'
 
-    module.exports = require('require-dir')('.', { camelcase: true });
-})();
+module.exports = require('require-dir')('.', { camelcase: true })

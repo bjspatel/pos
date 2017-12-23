@@ -1,11 +1,8 @@
-(function() {
+'use strict'
 
-    'use strict';
+const SentencePrefs = {}
 
-    const SentencePrefs = {};
+SentencePrefs.CREATE_SENTENCE = [
+]
 
-    SentencePrefs.CREATE_SENTENCE = [
-    ];
-
-    module.exports = SentencePrefs;
-})();
+module.exports = SentencePrefs

@@ -5,7 +5,7 @@
         });
 
         $('[data-toggle]').click(function() {
-          var selector = $(this).data('target') + ' pre code';
+          const selector = $(this).data('target') + ' pre code';
           $(selector).each(function(i, block) {
             hljs.highlightBlock(block);
           });
@@ -13,8 +13,8 @@
 
         // open modal on hashes like #_action_get
         $(window).bind('hashchange', function(e) {
-          var anchor_id = document.location.hash.substr(1); //strip #
-          var element = $('#' + anchor_id);
+          const anchor_id = document.location.hash.substr(1); //strip #
+          const element = $('#' + anchor_id);
 
           // do we have such element + is it a modal?  --> show it
           if (element.length && element.hasClass('modal')) {

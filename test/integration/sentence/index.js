@@ -1,10 +1,7 @@
-(function() {
-    'use strict';
+'use strict'
 
-    describe('Sentence Endpoints', function() {
-        require('./create-test');
-        require('./next-test');
-        // require('./delete-test');
-    });
-
-})();
+describe('Sentence Endpoints', () => {
+    require('./create-test')
+    require('./next-test')
+    // require('./delete-test')
+})

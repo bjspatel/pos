@@ -1,23 +1,20 @@
-(function() {
-    'use strict';
+    'use strict'
 
-    const supertest = require('supertest');
-    const expect    = require('chai').expect;
-    var server      = supertest.agent('http://localhost:8080');
+    const supertest = require('supertest')
+    const expect    = require('chai').expect
+    const server      = supertest.agent('http://localhost:8080')
 
-    describe('Sentence next tests', function() {
-        it('Next sentence', function(done) {
+    describe('Sentence next tests', () => {
+        it('Next sentence', done => {
 
-            const input = {};
+            const input = {}
 
             server.post('/api/sentences/next')
             .send(input)
-            .end(function(err, res) {
-                console.log('ERROR: ', err);
-                const result = res.body;
-                console.log('RESPONSE: ', JSON.stringify(result, null, 4));
-                done();
-            });
-        });
-    });
-})();
+            .end((err, res) => {
+                const result = res.body
+                console.log('RESPONSE: ', JSON.stringify(result, null, 4))
+                done()
+            })
+        })
+    })

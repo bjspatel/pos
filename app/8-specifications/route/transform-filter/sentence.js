@@ -1,28 +1,24 @@
 /**
  * Specification
  */
-(function() {
+'use strict'
 
-    'use strict';
+const postSentenceIn = [
+]
 
-    const postSentenceIn = [
-    ];
+const sentenceOut = [
+    '_id',
+    'parts'
+]
 
-    const sentenceOut = [
-        '_id',
-        'parts'
-    ];
+module.exports = {
+    CREATE_SENTENCE: {
+        in:  postSentenceIn,
+        out: sentenceOut
+    },
 
-    module.exports = {
-        CREATE_SENTENCE: {
-            in:  postSentenceIn,
-            out: sentenceOut
-        },
+    NEXT_SENTENCE: {
+        out: sentenceOut
+    }
 
-        NEXT_SENTENCE: {
-            out: sentenceOut
-        }
-
-    };
-
-})();
+}

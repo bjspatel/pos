@@ -1,21 +1,18 @@
-(function() {
+'use strict'
 
-    'use strict';
+const util        = require('util')
+const CustomError = require('./core/custom-error')
 
-    const util        = require('util');
-    const CustomError = require('./core/custom-error');
+function InternalError(options) {
 
-    function InternalError(options) {
+    options.name = 'InternalError'
+    options.status = 500
+    options.stack = Error.captureStackTrace(this)
 
-        options.name = 'InternalError';
-        options.status = 500;
-        options.stack = Error.captureStackTrace(this);
+    CustomError.call(this, options)
+}
 
-        CustomError.call(this, options);
-    }
+InternalError.bind(InternalError)
+util.inherits(InternalError, CustomError)
 
-    InternalError.bind(InternalError);
-    util.inherits(InternalError, CustomError);
-
-    module.exports = InternalError;
-})();
+module.exports = InternalError

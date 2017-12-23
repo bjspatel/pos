@@ -21,7 +21,6 @@ function userSchema() {
 
 function playerSchema() {
     const schemaObj = {
-
         "token": "String",
         "created_at": "Date",
         "played_at": "Date",
@@ -32,7 +31,6 @@ function playerSchema() {
         },
         "level": "Number",
         "move_choices": ["String"]
-
     };
 }
 
