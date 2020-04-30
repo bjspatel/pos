@@ -4,7 +4,9 @@
   "description": "The backend server for the web(sentense entry) and mobile(playing) interface",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --timeout 15000 test/integration"
+    "test": "mocha --timeout 15000 test/integration",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +20,8 @@
     "morgan": "^1.7.0",
     "nodemailer": "^2.6.4",
     "nodemailer-mailgun-transport": "^1.2.2",
-    "require-dir": "^0.3.1"
+    "require-dir": "^0.3.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -35,5 +38,6 @@
     "superagent": "^1.8.3",
     "supertest": "^2.0.1",
     "yargs": "^4.7.1"
-  }
+  },
+  "snyk": true
 }
