@@ -16,7 +16,7 @@
     "lodash": "^4.17.2",
     "mongoose": "^4.7.0",
     "morgan": "^1.7.0",
-    "nodemailer": "^2.6.4",
+    "nodemailer": "^6.6.1",
     "nodemailer-mailgun-transport": "^1.2.2",
     "require-dir": "^0.3.1"
   },
